@@ -1,6 +1,5 @@
-package com.sildian.apps.storywriter.ui.theme
+package com.sildian.apps.storywriter.designsystem.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

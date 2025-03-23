@@ -1,4 +1,4 @@
-package com.sildian.apps.storywriter.ui.theme
+package com.sildian.apps.storywriter.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

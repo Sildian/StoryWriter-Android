@@ -1,4 +1,4 @@
-package com.sildian.apps.storywriter.ui.theme
+package com.sildian.apps.storywriter.designsystem.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
