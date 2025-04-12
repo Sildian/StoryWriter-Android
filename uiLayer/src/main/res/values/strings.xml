@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="edit_scene_button_save">Save the scene</string>
+    <string name="edit_scene_label_scene">Scene</string>
+    <string name="edit_scene_placeholder_scene">Write your scene</string>
+</resources>
