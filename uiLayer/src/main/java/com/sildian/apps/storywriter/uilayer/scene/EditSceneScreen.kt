@@ -16,10 +16,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
@@ -29,7 +25,10 @@ import com.sildian.apps.storywriter.designsystem.theme.StoryWriterTheme
 import com.sildian.apps.storywriter.uilayer.R
 
 @Composable
-internal fun EditSceneScreen() {
+internal fun EditSceneScreen(
+    state: EditSceneViewModel.State,
+    onIntent: (EditSceneViewModel.Intent) -> Unit,
+) {
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing,
         bottomBar = {
@@ -40,20 +39,22 @@ internal fun EditSceneScreen() {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = { /*TODO*/ },
+                    enabled = state.isEdited,
                 ) {
                     Text(text = stringResource(id = R.string.edit_scene_button_save))
                 }
             }
         }
     ) { contentPadding ->
-        var sceneDescription by rememberSaveable { mutableStateOf("") }
         TextField(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(contentPadding)
                 .padding(16.dp),
-            value = sceneDescription,
-            onValueChange = { sceneDescription = it },
+            value = state.sceneDescription,
+            onValueChange = { newValue ->
+                onIntent(EditSceneViewModel.Intent.EditScene(sceneDescription = newValue))
+            },
             label = {
                 Text(text = stringResource(id = R.string.edit_scene_label_scene))
             },
@@ -69,6 +70,12 @@ internal fun EditSceneScreen() {
 @Composable
 private fun EditSceneScreenPreview() {
     StoryWriterTheme {
-        EditSceneScreen()
+        EditSceneScreen(
+            state = EditSceneViewModel.State(
+                sceneDescription = "This is a scene",
+                isEdited = true,
+            ),
+            onIntent = { },
+        )
     }
 }
