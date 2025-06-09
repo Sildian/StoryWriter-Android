@@ -1,13 +1,13 @@
 package com.sildian.apps.storywriter.domainlayer.scene
 
-fun interface UpdateSceneUseCase {
+fun interface SaveSceneUseCase {
     suspend operator fun invoke(scene: Scene): Result<Unit>
 }
 
-internal class UpdateSceneUseCaseImpl(
+internal class SaveSceneUseCaseImpl(
     private val sceneRepository: SceneRepository,
-) : UpdateSceneUseCase {
+) : SaveSceneUseCase {
 
     override suspend operator fun invoke(scene: Scene): Result<Unit> =
-        sceneRepository.updateScene(scene = scene)
+        sceneRepository.saveScene(scene = scene)
 }

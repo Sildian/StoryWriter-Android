@@ -6,14 +6,14 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class UpdateSceneUseCaseImplTest {
+class SaveSceneUseCaseImplTest {
 
     @Test
     fun `GIVEN failure from repository WHEN invoke THEN return failure`() = runTest {
         // Given
         val exception = Throwable()
         val repository = object : SceneRepositoryFake() {
-            override suspend fun updateScene(scene: Scene): Result<Unit> =
+            override suspend fun saveScene(scene: Scene): Result<Unit> =
                 Result.failure(exception = exception)
         }
         val useCase = initUseCase(sceneRepository = repository)
@@ -29,7 +29,7 @@ class UpdateSceneUseCaseImplTest {
     fun `GIVEN success from repository WHEN invoke THEN return success`() = runTest {
         // Given
         val repository = object : SceneRepositoryFake() {
-            override suspend fun updateScene(scene: Scene): Result<Unit> =
+            override suspend fun saveScene(scene: Scene): Result<Unit> =
                 Result.success(Unit)
         }
         val useCase = initUseCase(sceneRepository = repository)
@@ -43,6 +43,6 @@ class UpdateSceneUseCaseImplTest {
 
     private fun initUseCase(
         sceneRepository: SceneRepository = SceneRepositoryFake(),
-    ): UpdateSceneUseCase =
-        UpdateSceneUseCaseImpl(sceneRepository = sceneRepository)
+    ): SaveSceneUseCase =
+        SaveSceneUseCaseImpl(sceneRepository = sceneRepository)
 }

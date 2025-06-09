@@ -4,7 +4,7 @@ import com.sildian.apps.storywriter.domainlayer.nextString
 import kotlin.random.Random
 
 fun Random.nextScene(
-    id: Int = nextInt(until = 100),
+    id: Int = nextInt(from = 1, until = 100),
     description: String = nextString(),
 ): Scene = Scene(
     id = id,

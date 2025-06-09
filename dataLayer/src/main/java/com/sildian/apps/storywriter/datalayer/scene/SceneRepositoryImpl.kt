@@ -8,11 +8,11 @@ internal class SceneRepositoryImpl(
     private val storyWriterDatabase: StoryWriterDatabase,
 ) : SceneRepository {
 
-    override suspend fun addScene(scene: Scene): Result<Unit> = runCatching {
-        storyWriterDatabase.sceneDao().insert(scene = scene.toDb())
-    }
-
-    override suspend fun updateScene(scene: Scene): Result<Unit> = runCatching {
-        storyWriterDatabase.sceneDao().update(scene = scene.toDb())
+    override suspend fun saveScene(scene: Scene): Result<Unit> = runCatching {
+        if (scene.id == 0) {
+            storyWriterDatabase.sceneDao().insert(scene = scene.toDb())
+        } else {
+            storyWriterDatabase.sceneDao().update(scene = scene.toDb())
+        }
     }
 }
