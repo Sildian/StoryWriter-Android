@@ -1,6 +1,8 @@
 package com.sildian.apps.storywriter
 
 import android.app.Application
+import com.sildian.apps.storywriter.datalayer.dataLayerModule
+import com.sildian.apps.storywriter.domainlayer.domainLayerModule
 import com.sildian.apps.storywriter.uilayer.uiLayerModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -13,7 +15,11 @@ class MainApplication : Application() {
         startKoin {
             androidLogger()
             androidContext(this@MainApplication)
-            modules(uiLayerModule)
+            modules(
+                dataLayerModule,
+                domainLayerModule,
+                uiLayerModule,
+            )
         }
     }
 }

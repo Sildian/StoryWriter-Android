@@ -5,5 +5,5 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
 val uiLayerModule = module {
-    viewModel { EditSceneViewModel(savedStateHandle = get()) }
+    viewModel { EditSceneViewModel(savedStateHandle = get(), saveSceneUseCase = get()) }
 }

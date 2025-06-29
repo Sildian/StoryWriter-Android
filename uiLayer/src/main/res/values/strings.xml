@@ -2,5 +2,7 @@
 <resources>
     <string name="edit_scene_button_save">Save the scene</string>
     <string name="edit_scene_label_scene">Scene</string>
+    <string name="edit_scene_message_save_scene_failure">The scene could not be saved. Please try again later.</string>
+    <string name="edit_scene_message_save_scene_success">The scene was successfully saved.</string>
     <string name="edit_scene_placeholder_scene">Write your scene</string>
 </resources>
