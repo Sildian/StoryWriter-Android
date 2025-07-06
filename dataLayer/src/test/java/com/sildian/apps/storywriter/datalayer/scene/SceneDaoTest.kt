@@ -26,10 +26,11 @@ class SceneDaoTest {
         val scene = Random.nextSceneDb(id = 0)
 
         // When
-        databaseRule.database.sceneDao().insert(scene = scene)
+        val id = databaseRule.database.sceneDao().insert(scene = scene)
 
         // Then
         val result = databaseRule.database.sceneDao().get(id = 1)
+        assertEquals(expected = 1, actual = id)
         assertEquals(expected = scene.copy(id = 1), actual = result)
     }
 

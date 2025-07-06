@@ -9,11 +9,11 @@ import androidx.room.Update
 internal interface SceneDao {
 
     @Insert
-    suspend fun insert(scene: SceneDb)
+    suspend fun insert(scene: SceneDb): Long
 
     @Update
     suspend fun update(scene: SceneDb)
 
     @Query("SELECT * FROM SceneDb WHERE id = :id")
-    suspend fun get(id: Int): SceneDb
+    suspend fun get(id: Long): SceneDb
 }

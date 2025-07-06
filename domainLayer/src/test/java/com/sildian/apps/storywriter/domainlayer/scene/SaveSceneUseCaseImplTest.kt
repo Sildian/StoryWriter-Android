@@ -13,7 +13,7 @@ class SaveSceneUseCaseImplTest {
         // Given
         val exception = Throwable()
         val repository = object : SceneRepositoryFake() {
-            override suspend fun saveScene(scene: Scene): Result<Unit> =
+            override suspend fun saveScene(scene: Scene): Result<Long> =
                 Result.failure(exception = exception)
         }
         val useCase = initUseCase(sceneRepository = repository)
@@ -29,8 +29,8 @@ class SaveSceneUseCaseImplTest {
     fun `GIVEN success from repository WHEN invoke THEN return success`() = runTest {
         // Given
         val repository = object : SceneRepositoryFake() {
-            override suspend fun saveScene(scene: Scene): Result<Unit> =
-                Result.success(Unit)
+            override suspend fun saveScene(scene: Scene): Result<Long> =
+                Result.success(Random.nextLong(from = 1, until = 100))
         }
         val useCase = initUseCase(sceneRepository = repository)
 

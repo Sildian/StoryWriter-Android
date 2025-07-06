@@ -36,12 +36,15 @@ class SceneRepositoryImplTest {
     fun `GIVEN success and new scene WHEN saveScene THEN result is success and scene is inserted`() = runTest {
         // Given
         val scene = Random.nextScene(id = 0)
+        val nextId: Long = Random.nextLong(from = 1, until = 100)
         var insertedScene: SceneDb? = null
+
         val repository = initRepository(
             storyWriterDatabase = object : StoryWriterDatabaseFake() {
                 override fun sceneDao(): SceneDao = object : SceneDaoFake() {
-                    override suspend fun insert(scene: SceneDb) {
+                    override suspend fun insert(scene: SceneDb): Long {
                         insertedScene = scene
+                        return nextId
                     }
                 }
             }
@@ -51,7 +54,7 @@ class SceneRepositoryImplTest {
         val result = repository.saveScene(scene = scene)
 
         // Then
-        assertEquals(expected = Result.success(Unit), actual = result)
+        assertEquals(expected = Result.success(nextId), actual = result)
         assertEquals(expected = scene.toDb(), actual = insertedScene)
     }
 
@@ -74,9 +77,8 @@ class SceneRepositoryImplTest {
         val result = repository.saveScene(scene = scene)
 
         // Then
-        assertEquals(expected = Result.success(Unit), actual = result)
+        assertEquals(expected = Result.success(scene.id), actual = result)
         assertEquals(expected = scene.toDb(), actual = updatedScene)
-
     }
 
     private fun initRepository(

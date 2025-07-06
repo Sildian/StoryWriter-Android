@@ -46,7 +46,7 @@ internal class EditSceneViewModel(
         if (!state.value.isEdited) return
         viewModelScope.launch {
             savedStateHandle[KEY_STATE] = state.value.copy(isSaveSceneInProgress = true)
-            saveSceneUseCase(scene = Scene(id = 0, description = state.value.sceneDescription))
+            saveSceneUseCase(scene = Scene(description = state.value.sceneDescription))
                 .onFailure {
                     savedStateHandle[KEY_STATE] = state.value.copy(isSaveSceneInProgress = false)
                     _event.send(Event.SaveSceneFailure)

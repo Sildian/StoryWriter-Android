@@ -1,5 +1,5 @@
 package com.sildian.apps.storywriter.domainlayer.scene
 
 interface SceneRepository {
-    suspend fun saveScene(scene: Scene): Result<Unit>
+    suspend fun saveScene(scene: Scene): Result<Long>
 }

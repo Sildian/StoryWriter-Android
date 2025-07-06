@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.sildian.apps.storywriter.domainlayer.scene.SaveSceneUseCase
 import kotlinx.coroutines.test.runTest
+import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
@@ -70,7 +71,7 @@ class EditSceneViewModelTest {
         var isSavedSceneUseCaseCalled = false
         val saveSceneUseCase = SaveSceneUseCase {
             isSavedSceneUseCaseCalled = true
-            Result.success(value = Unit)
+            Result.success(value = Random.nextLong(from = 1, until = 100))
         }
         val viewModel = initViewModel(saveSceneUseCase = saveSceneUseCase)
 
@@ -124,7 +125,7 @@ class EditSceneViewModelTest {
         var isSaveSceneUseCaseCalled = false
         val saveSceneUseCase = SaveSceneUseCase {
             isSaveSceneUseCaseCalled = true
-            Result.success(value = Unit)
+            Result.success(value = Random.nextLong(from = 1, until = 100))
         }
         val viewModel = initViewModel(saveSceneUseCase = saveSceneUseCase)
         val sceneDescription = "This is a scene."
@@ -151,7 +152,9 @@ class EditSceneViewModelTest {
     }
 
     private fun initViewModel(
-        saveSceneUseCase: SaveSceneUseCase = SaveSceneUseCase { Result.success(value = Unit) },
+        saveSceneUseCase: SaveSceneUseCase = SaveSceneUseCase {
+            Result.success(value = Random.nextLong(from = 1, until = 100))
+        },
     ): EditSceneViewModel =
         EditSceneViewModel(
             savedStateHandle = SavedStateHandle(),
