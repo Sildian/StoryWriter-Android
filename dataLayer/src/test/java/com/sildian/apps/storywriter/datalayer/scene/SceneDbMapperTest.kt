@@ -5,7 +5,7 @@ import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class SceneMapperTest {
+class SceneDbMapperTest {
 
     @Test
     fun `GIVEN any Scene WHEN mapping toDb THEN SceneDb is returned`() {

@@ -56,6 +56,7 @@ dependencies {
     implementation(projects.domainLayer)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    testImplementation(testFixtures(projects.domainLayer))
     testImplementation(libs.junit)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotlinx.coroutines.test)

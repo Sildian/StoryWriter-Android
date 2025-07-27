@@ -37,7 +37,7 @@ class EditSceneViewModelTest {
         // Then
         viewModel.state.test {
             val expectedState = EditSceneViewModel.State(
-                sceneDescription = sceneDescription,
+                scene = SceneUi(description = sceneDescription),
                 isEdited = false,
             )
             assertEquals(expected = expectedState, actual = awaitItem())
@@ -57,7 +57,7 @@ class EditSceneViewModelTest {
         // Then
         viewModel.state.test {
             val expectedState = EditSceneViewModel.State(
-                sceneDescription = sceneDescription,
+                scene = SceneUi(description = sceneDescription),
                 isEdited = true,
             )
             assertEquals(expected = expectedState, actual = awaitItem())
@@ -105,7 +105,7 @@ class EditSceneViewModelTest {
         // Then
         viewModel.state.test {
             val expectedState = EditSceneViewModel.State(
-                sceneDescription = sceneDescription,
+                scene = SceneUi(description = sceneDescription),
                 isEdited = true,
             )
             assertTrue(isSavedSceneUseCaseCalled)
@@ -120,12 +120,13 @@ class EditSceneViewModelTest {
     }
 
     @Test
-    fun `GIVEN succeeding SaveScene intent while scene is edited WHEN onIntent THEN save attempt is made, state is not edited anymore and success event is raised`() = runTest {
+    fun `GIVEN succeeding SaveScene intent while scene is edited WHEN onIntent THEN save attempt is made, scene id is updated, state is not edited anymore and success event is raised`() = runTest {
         // Given
         var isSaveSceneUseCaseCalled = false
+        val sceneNextId = Random.nextLong(from = 1, until = 100)
         val saveSceneUseCase = SaveSceneUseCase {
             isSaveSceneUseCaseCalled = true
-            Result.success(value = Random.nextLong(from = 1, until = 100))
+            Result.success(value = sceneNextId)
         }
         val viewModel = initViewModel(saveSceneUseCase = saveSceneUseCase)
         val sceneDescription = "This is a scene."
@@ -137,7 +138,7 @@ class EditSceneViewModelTest {
         // Then
         viewModel.state.test {
             val expectedState = EditSceneViewModel.State(
-                sceneDescription = sceneDescription,
+                scene = SceneUi(id = sceneNextId, description = sceneDescription),
                 isEdited = false,
             )
             assertTrue(isSaveSceneUseCaseCalled)

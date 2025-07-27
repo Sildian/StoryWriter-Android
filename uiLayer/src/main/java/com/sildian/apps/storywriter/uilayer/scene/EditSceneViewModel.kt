@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sildian.apps.storywriter.domainlayer.scene.SaveSceneUseCase
-import com.sildian.apps.storywriter.domainlayer.scene.Scene
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -36,8 +35,9 @@ internal class EditSceneViewModel(
     }
 
     private fun editScene(sceneDescription: String) {
+        val currentScene = state.value.scene
         savedStateHandle[KEY_STATE] = state.value.copy(
-            sceneDescription = sceneDescription,
+            scene = currentScene.copy(description = sceneDescription),
             isEdited = sceneDescription.isNotBlank(),
         )
     }
@@ -45,13 +45,15 @@ internal class EditSceneViewModel(
     private fun saveScene() {
         if (!state.value.isEdited) return
         viewModelScope.launch {
+            val currentScene = state.value.scene
             savedStateHandle[KEY_STATE] = state.value.copy(isSaveSceneInProgress = true)
-            saveSceneUseCase(scene = Scene(description = state.value.sceneDescription))
+            saveSceneUseCase(scene = state.value.scene.toDomain())
                 .onFailure {
                     savedStateHandle[KEY_STATE] = state.value.copy(isSaveSceneInProgress = false)
                     _event.send(Event.SaveSceneFailure)
-                }.onSuccess {
+                }.onSuccess { id ->
                     savedStateHandle[KEY_STATE] = state.value.copy(
+                        scene = currentScene.copy(id = id),
                         isEdited = false,
                         isSaveSceneInProgress = false,
                     )
@@ -62,7 +64,7 @@ internal class EditSceneViewModel(
 
     @Parcelize
     data class State(
-        val sceneDescription: String = "",
+        val scene: SceneUi = SceneUi(),
         val isEdited: Boolean = false,
         val isSaveSceneInProgress: Boolean = false,
     ) : Parcelable

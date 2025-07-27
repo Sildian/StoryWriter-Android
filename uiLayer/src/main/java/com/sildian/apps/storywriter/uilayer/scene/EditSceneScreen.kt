@@ -65,7 +65,7 @@ internal fun EditSceneScreen(
                 .fillMaxSize()
                 .padding(contentPadding)
                 .padding(16.dp),
-            value = state.sceneDescription,
+            value = state.scene.description,
             onValueChange = { newValue ->
                 onIntent(EditSceneViewModel.Intent.EditScene(sceneDescription = newValue))
             },
@@ -87,7 +87,7 @@ private fun EditSceneScreenPreview() {
         EditSceneScreen(
             snackbarHostState = remember { SnackbarHostState() },
             state = EditSceneViewModel.State(
-                sceneDescription = "This is a scene",
+                scene = SceneUi(description = "This is a scene"),
                 isEdited = true,
             ),
             onIntent = { },
