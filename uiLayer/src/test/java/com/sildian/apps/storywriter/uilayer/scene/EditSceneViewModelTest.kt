@@ -3,6 +3,7 @@ package com.sildian.apps.storywriter.uilayer.scene
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.sildian.apps.storywriter.domainlayer.scene.SaveSceneUseCase
+import com.sildian.apps.storywriter.uilayer.scene.editscene.EditSceneViewModel
 import kotlinx.coroutines.test.runTest
 import kotlin.random.Random
 import kotlin.test.Test

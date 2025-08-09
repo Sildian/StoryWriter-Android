@@ -1,4 +1,4 @@
-package com.sildian.apps.storywriter.uilayer.scene
+package com.sildian.apps.storywriter.uilayer.scene.editscene
 
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable

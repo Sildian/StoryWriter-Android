@@ -1,4 +1,4 @@
-package com.sildian.apps.storywriter.uilayer.scene
+package com.sildian.apps.storywriter.uilayer.scene.editscene
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.PaddingValues
@@ -28,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sildian.apps.storywriter.designsystem.theme.StoryWriterTheme
 import com.sildian.apps.storywriter.uilayer.R
+import com.sildian.apps.storywriter.uilayer.scene.SceneUi
 
 @Composable
 internal fun EditSceneScreen(

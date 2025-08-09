@@ -1,10 +1,12 @@
-package com.sildian.apps.storywriter.uilayer.scene
+package com.sildian.apps.storywriter.uilayer.scene.editscene
 
 import android.os.Parcelable
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sildian.apps.storywriter.domainlayer.scene.SaveSceneUseCase
+import com.sildian.apps.storywriter.uilayer.scene.SceneUi
+import com.sildian.apps.storywriter.uilayer.scene.toDomain
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
