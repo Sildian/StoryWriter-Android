@@ -23,3 +23,6 @@ rootProject.name = "StoryWriter"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 include(":app")
 include(":designSystem")
+include(":uiLayer")
+include(":domainLayer")
+include(":dataLayer")
