@@ -13,7 +13,7 @@ import kotlin.test.assertTrue
 class EditSceneViewModelTest {
 
     @Test
-    fun `GIVEN WHEN init THEN state is initialized`() = runTest {
+    fun `state should be initialized after init`() = runTest {
         // Given When
         val viewModel = initViewModel()
 
@@ -21,12 +21,12 @@ class EditSceneViewModelTest {
         viewModel.state.test {
             val expectedState = EditSceneViewModel.State()
             assertEquals(expected = expectedState, actual = awaitItem())
-            cancelAndConsumeRemainingEvents()
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `GIVEN EditScene intent with a blank text WHEN onIntent THEN state is updated and not edited`() = runTest {
+    fun `EditScene intent with a blank text should update the state to not edited`() = runTest {
         // Given
         val viewModel = initViewModel()
         val sceneDescription = " "
@@ -41,12 +41,12 @@ class EditSceneViewModelTest {
                 isEdited = false,
             )
             assertEquals(expected = expectedState, actual = awaitItem())
-            cancelAndConsumeRemainingEvents()
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `GIVEN EditScene intent with a text WHEN onIntent THEN state is updated and edited`() = runTest {
+    fun `EditScene intent with a text should update state to edited`() = runTest {
         // Given
         val viewModel = initViewModel()
         val sceneDescription = "This is a scene."
@@ -61,12 +61,12 @@ class EditSceneViewModelTest {
                 isEdited = true,
             )
             assertEquals(expected = expectedState, actual = awaitItem())
-            cancelAndConsumeRemainingEvents()
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `GIVEN SaveScene intent while scene is not edited WHEN onIntent THEN do nothing`() = runTest {
+    fun `SaveScene intent should do nothing when scene is not edited`() = runTest {
         // Given
         var isSavedSceneUseCaseCalled = false
         val saveSceneUseCase = SaveSceneUseCase {
@@ -83,12 +83,12 @@ class EditSceneViewModelTest {
             val expectedState = EditSceneViewModel.State()
             assertFalse(isSavedSceneUseCaseCalled)
             assertEquals(expected = expectedState, actual = awaitItem())
-            cancelAndConsumeRemainingEvents()
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `GIVEN failing SaveScene intent WHEN onIntent THEN save attempt is made, state is still edited and failure event is raised`() = runTest {
+    fun `SaveScene intent should not change the state but raise a failure event when useCase fails`() = runTest {
         // Given
         var isSavedSceneUseCaseCalled = false
         val saveSceneUseCase = SaveSceneUseCase {
@@ -110,17 +110,17 @@ class EditSceneViewModelTest {
             )
             assertTrue(isSavedSceneUseCaseCalled)
             assertEquals(expected = expectedState, actual = awaitItem())
-            cancelAndConsumeRemainingEvents()
+            cancelAndIgnoreRemainingEvents()
         }
         viewModel.event.test {
             val expectedEvent = EditSceneViewModel.Event.SaveSceneFailure
             assertEquals(expected = expectedEvent, actual = awaitItem())
-            cancelAndConsumeRemainingEvents()
+            cancelAndIgnoreRemainingEvents()
         }
     }
 
     @Test
-    fun `GIVEN succeeding SaveScene intent while scene is edited WHEN onIntent THEN save attempt is made, scene id is updated, state is not edited anymore and success event is raised`() = runTest {
+    fun `SaveScene intent should update the state to not edited, update the scene id and raise a success event when useCase succeeds`() = runTest {
         // Given
         var isSaveSceneUseCaseCalled = false
         val sceneNextId = Random.nextLong(from = 1, until = 100)
@@ -143,12 +143,12 @@ class EditSceneViewModelTest {
             )
             assertTrue(isSaveSceneUseCaseCalled)
             assertEquals(expected = expectedState, actual = awaitItem())
-            cancelAndConsumeRemainingEvents()
+            cancelAndIgnoreRemainingEvents()
         }
         viewModel.event.test {
             val expectedEvent = EditSceneViewModel.Event.SaveSceneSuccess
             assertEquals(expected = expectedEvent, actual = awaitItem())
-            cancelAndConsumeRemainingEvents()
+            cancelAndIgnoreRemainingEvents()
         }
     }
 

@@ -9,7 +9,7 @@ import kotlin.test.assertTrue
 class SaveSceneUseCaseImplTest {
 
     @Test
-    fun `GIVEN failure from repository WHEN invoke THEN return failure`() = runTest {
+    fun `useCase should fail when repository fails`() = runTest {
         // Given
         val exception = Throwable()
         val repository = object : SceneRepositoryFake() {
@@ -26,7 +26,7 @@ class SaveSceneUseCaseImplTest {
     }
 
     @Test
-    fun `GIVEN success from repository WHEN invoke THEN return success`() = runTest {
+    fun `useCase should succeed when repository succeeds`() = runTest {
         // Given
         val repository = object : SceneRepositoryFake() {
             override suspend fun saveScene(scene: Scene): Result<Long> =

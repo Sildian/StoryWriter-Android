@@ -13,7 +13,7 @@ import kotlin.test.assertEquals
 class SceneRepositoryImplTest {
 
     @Test
-    fun `GIVEN failure WHEN saveScene THEN result is failure`() = runTest {
+    fun `saveScene should fail when database fails`() = runTest {
         // Given
         val error = IOException()
         val repository = initRepository(
@@ -33,7 +33,7 @@ class SceneRepositoryImplTest {
     }
 
     @Test
-    fun `GIVEN success and new scene WHEN saveScene THEN result is success and scene is inserted`() = runTest {
+    fun `saveScene should insert the given scene when it is a new scene`() = runTest {
         // Given
         val scene = Random.nextScene(id = 0)
         val nextId: Long = Random.nextLong(from = 1, until = 100)
@@ -59,7 +59,7 @@ class SceneRepositoryImplTest {
     }
 
     @Test
-    fun `GIVEN success and existing scene WHEN saveScene THEN result is success and scene is updated`() = runTest {
+    fun `saveScene should update the given scene when it is an existing scene`() = runTest {
         // Given
         val scene = Random.nextScene()
         var updatedScene: SceneDb? = null

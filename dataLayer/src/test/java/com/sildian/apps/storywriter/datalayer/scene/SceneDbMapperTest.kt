@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 class SceneDbMapperTest {
 
     @Test
-    fun `GIVEN any Scene WHEN mapping toDb THEN SceneDb is returned`() {
+    fun `map scene toDb should correctly map it`() {
         // Given
         val scene = Random.nextScene()
 

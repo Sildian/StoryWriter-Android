@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
 class SceneUiMapperTest {
 
     @Test
-    fun `GIVEN any SceneUi WHEN mapping toDomain THEN Scene is returned`() {
+    fun `map scene toDomain should correctly map it`() {
         // Given
         val sceneUi = Random.nextSceneUi()
 
