@@ -49,4 +49,20 @@ class SceneDaoTest {
         val result = databaseRule.database.sceneDao().get(id = scene.id)
         assertEquals(expected = updatedScene, actual = result)
     }
+
+    @Test
+    fun `getAll should return all scenes`() = runTest {
+        // Given
+        val scenes = List(size = 3) { Random.nextSceneDb(id = 0) }
+        scenes.forEach { scene -> databaseRule.database.sceneDao().insert(scene = scene) }
+
+        // When
+        val result = databaseRule.database.sceneDao().getAll()
+
+        // Then
+        val expectedResult = scenes.mapIndexed { index, scene ->
+            scene.copy(id = (index + 1).toLong())
+        }
+        assertEquals(expected = expectedResult, actual = result)
+    }
 }

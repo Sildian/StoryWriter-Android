@@ -7,3 +7,9 @@ internal fun Scene.toDb(): SceneDb =
         id = id,
         description = description,
     )
+
+internal fun SceneDb.toDomain(): Scene =
+    Scene(
+        id = id,
+        description = description,
+    )

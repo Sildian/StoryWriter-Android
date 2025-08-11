@@ -14,6 +14,9 @@ internal interface SceneDao {
     @Update
     suspend fun update(scene: SceneDb)
 
+    @Query("SELECT * FROM SceneDb")
+    suspend fun getAll(): List<SceneDb>
+
     @Query("SELECT * FROM SceneDb WHERE id = :id")
     suspend fun get(id: Long): SceneDb
 }

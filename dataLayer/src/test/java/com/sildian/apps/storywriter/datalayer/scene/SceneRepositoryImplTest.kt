@@ -13,6 +13,44 @@ import kotlin.test.assertEquals
 class SceneRepositoryImplTest {
 
     @Test
+    fun `getAllScenes should fail when database fails`() = runTest {
+        // Given
+        val error = IOException()
+        val repository = initRepository(
+            storyWriterDatabase = object : StoryWriterDatabaseFake() {
+                override fun sceneDao(): SceneDao = object : SceneDaoFake() {
+                    override suspend fun getAll(): List<SceneDb> = throw error
+                }
+            }
+        )
+
+        // When
+        val result = repository.getAllScenes()
+
+        // Then
+        assertEquals(expected = Result.failure(error), actual = result)
+    }
+
+    @Test
+    fun `getAllScenes should return all scenes when database succeeds`() = runTest {
+        // Given
+        val scenes = List(size = 3) { index -> Random.nextScene(id = index.toLong()) }
+        val repository = initRepository(
+            storyWriterDatabase = object : StoryWriterDatabaseFake() {
+                override fun sceneDao(): SceneDao = object : SceneDaoFake() {
+                    override suspend fun getAll(): List<SceneDb> = scenes.map { it.toDb() }
+                }
+            }
+        )
+
+        // When
+        val result = repository.getAllScenes()
+
+        // Then
+        assertEquals(expected = Result.success(scenes), actual = result)
+    }
+
+    @Test
     fun `saveScene should fail when database fails`() = runTest {
         // Given
         val error = IOException()
