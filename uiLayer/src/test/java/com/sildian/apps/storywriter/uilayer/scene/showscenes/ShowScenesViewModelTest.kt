@@ -1,0 +1,60 @@
+package com.sildian.apps.storywriter.uilayer.scene.showscenes
+
+import androidx.lifecycle.SavedStateHandle
+import app.cash.turbine.test
+import com.sildian.apps.storywriter.domainlayer.scene.GetAllScenesUseCase
+import com.sildian.apps.storywriter.domainlayer.scene.nextScene
+import com.sildian.apps.storywriter.uilayer.scene.toUi
+import kotlinx.coroutines.test.runTest
+import java.io.IOException
+import kotlin.random.Random
+import kotlin.test.Test
+import kotlin.test.assertEquals
+
+class ShowScenesViewModelTest {
+
+    @Test
+    fun `init should raise Failure state when useCase fails`() = runTest {
+        // Given
+        val exception = IOException()
+        val getAllScenesUseCase = GetAllScenesUseCase { Result.failure(exception = exception) }
+
+        // When
+        val viewModel = initViewModel(getAllScenesUseCase = getAllScenesUseCase)
+
+        // Then
+        viewModel.state.test {
+            val expectedState = ShowScenesViewModel.State.Failure
+            assertEquals(expected = expectedState, actual = awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `init should raise Success state with given scenes when useCase succeeds`() = runTest {
+        // Given
+        val scenes = List(size = 3) { index -> Random.nextScene(id = index.toLong()) }
+        val getAllScenesUseCase = GetAllScenesUseCase { Result.success(value = scenes) }
+
+        // When
+        val viewModel = initViewModel(getAllScenesUseCase = getAllScenesUseCase)
+
+        // Then
+        viewModel.state.test {
+            val expectedState = ShowScenesViewModel.State.Success(scenes = scenes.map { it.toUi() })
+            assertEquals(expected = expectedState, actual = awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    private fun initViewModel(
+        savedStateHandle: SavedStateHandle = SavedStateHandle(),
+        getAllScenesUseCase: GetAllScenesUseCase = GetAllScenesUseCase {
+            Result.success(List(size = 3) { index -> Random.nextScene(id = index.toLong()) })
+        },
+    ): ShowScenesViewModel =
+        ShowScenesViewModel(
+            savedStateHandle = savedStateHandle,
+            getAllScenesUseCase = getAllScenesUseCase,
+        )
+}
