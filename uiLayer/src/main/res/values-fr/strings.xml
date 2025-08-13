@@ -5,4 +5,7 @@
     <string name="edit_scene_message_save_scene_failure">La scène n\'a pas pu être enregistrée. Veuillez réessayer plus tard.</string>
     <string name="edit_scene_message_save_scene_success">La scène a été enregistrée avec succès.</string>
     <string name="edit_scene_placeholder_scene">Écrivez votre scène</string>
+
+    <string name="show_scenes_button_retry">Réessayer</string>
+    <string name="show_scenes_message_load_scenes_failure">Les scènes n\'ont pas pu être chargées. Veuillez réessayer plus tard.</string>
 </resources>
