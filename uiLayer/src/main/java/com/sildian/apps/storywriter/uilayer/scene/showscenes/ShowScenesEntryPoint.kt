@@ -6,7 +6,11 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 internal fun ShowScenesEntryPoint(
+    onAddSceneButtonClick: () -> Unit,
     viewModel: ShowScenesViewModel = koinViewModel<ShowScenesViewModel>(),
 ) {
-    ShowScenesScreen(state = viewModel.state.collectAsStateWithLifecycle().value)
+    ShowScenesScreen(
+        state = viewModel.state.collectAsStateWithLifecycle().value,
+        onAddSceneButtonClick = onAddSceneButtonClick,
+    )
 }

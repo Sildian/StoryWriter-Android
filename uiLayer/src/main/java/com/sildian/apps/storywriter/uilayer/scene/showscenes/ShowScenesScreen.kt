@@ -1,5 +1,6 @@
 package com.sildian.apps.storywriter.uilayer.scene.showscenes
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +14,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -34,9 +36,15 @@ import com.sildian.apps.storywriter.uilayer.scene.SceneUi
 @Composable
 internal fun ShowScenesScreen(
     state: ShowScenesViewModel.State,
+    onAddSceneButtonClick: () -> Unit,
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing,
+        floatingActionButton = {
+            AnimatedVisibility(visible = state is ShowScenesViewModel.State.Success) {
+                AddSceneFab(onClick = onAddSceneButtonClick)
+            }
+        },
     ) { contentPadding ->
         Crossfade(targetState = state) { currentState ->
             val contentModifier = Modifier
@@ -47,7 +55,10 @@ internal fun ShowScenesScreen(
                 is ShowScenesViewModel.State.Loading ->
                     LoadingContent(modifier = contentModifier)
                 is ShowScenesViewModel.State.Failure ->
-                    FailureContent(modifier = contentModifier)
+                    FailureContent(
+                        modifier = contentModifier,
+                        onRetryButtonClick = { /*TODO*/ },
+                    )
                 is ShowScenesViewModel.State.Success ->
                     SuccessContent(
                         modifier = contentModifier,
@@ -72,6 +83,7 @@ private fun LoadingContent(
 
 @Composable
 private fun FailureContent(
+    onRetryButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -93,7 +105,7 @@ private fun FailureContent(
                 textAlign = TextAlign.Center,
             )
             Button(
-                onClick = { /*TODO*/ },
+                onClick = onRetryButtonClick,
             ) {
                 Text(text = stringResource(id = R.string.show_scenes_button_retry))
             }
@@ -119,13 +131,32 @@ private fun SuccessContent(
     }
 }
 
+@Composable
+private fun AddSceneFab(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    FloatingActionButton(
+        modifier = modifier,
+        onClick = onClick,
+    ) {
+        Icon(
+            painter = painterResource(id = R.drawable.add_fill),
+            contentDescription = stringResource(id = R.string.show_scenes_button_add_scene_content_description),
+        )
+    }
+}
+
 @Preview
 @Composable
 private fun ShowScenesScreenPreview(
     @PreviewParameter(ShowScenesStatePreviewParamProvider::class) state: ShowScenesViewModel.State,
 ) {
     StoryWriterTheme {
-        ShowScenesScreen(state = state)
+        ShowScenesScreen(
+            state = state,
+            onAddSceneButtonClick = { },
+        )
     }
 }
 
