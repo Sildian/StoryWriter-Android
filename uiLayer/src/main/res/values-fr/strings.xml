@@ -6,7 +6,8 @@
     <string name="edit_scene_message_save_scene_success">La scène a été enregistrée avec succès.</string>
     <string name="edit_scene_placeholder_scene">Écrivez votre scène</string>
 
-    <string name="show_scenes_button_add_scene_content_description">Ajouter une nouvelle scène</string>"
+    <string name="show_scenes_button_add_scene_content_description">Ajouter une nouvelle scène</string>
     <string name="show_scenes_button_retry">Réessayer</string>
+    <string name="show_scenes_action_edit_scene_content_description">Modifier cette scène</string>
     <string name="show_scenes_message_load_scenes_failure">Les scènes n\'ont pas pu être chargées. Veuillez réessayer plus tard.</string>
 </resources>

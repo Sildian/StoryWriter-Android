@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.sildian.apps.storywriter.domainlayer.scene.SaveSceneUseCase
 import com.sildian.apps.storywriter.uilayer.scene.SceneUi
+import com.sildian.apps.storywriter.uilayer.scene.nextSceneUi
 import kotlinx.coroutines.test.runTest
 import kotlin.random.Random
 import kotlin.test.Test
@@ -21,6 +22,26 @@ class EditSceneViewModelTest {
         // Then
         viewModel.state.test {
             val expectedState = EditSceneViewModel.State()
+            assertEquals(expected = expectedState, actual = awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `state should be initialized with initial scene when it is provided`() = runTest {
+        // Given
+        val initialScene = Random.nextSceneUi()
+
+        // When
+        val viewModel = initViewModel(
+            savedStateHandle = SavedStateHandle(
+                initialState = mapOf(EditSceneViewModel.KEY_INITIAL_SCENE to initialScene),
+            ),
+        )
+
+        // Then
+        viewModel.state.test {
+            val expectedState = EditSceneViewModel.State(scene = initialScene)
             assertEquals(expected = expectedState, actual = awaitItem())
             cancelAndIgnoreRemainingEvents()
         }
@@ -156,12 +177,13 @@ class EditSceneViewModelTest {
         }
 
     private fun initViewModel(
+        savedStateHandle: SavedStateHandle = SavedStateHandle(),
         saveSceneUseCase: SaveSceneUseCase = SaveSceneUseCase {
             Result.success(value = Random.Default.nextLong(from = 1, until = 100))
         },
     ): EditSceneViewModel =
         EditSceneViewModel(
-            savedStateHandle = SavedStateHandle(),
+            savedStateHandle = savedStateHandle,
             saveSceneUseCase = saveSceneUseCase,
         )
 }

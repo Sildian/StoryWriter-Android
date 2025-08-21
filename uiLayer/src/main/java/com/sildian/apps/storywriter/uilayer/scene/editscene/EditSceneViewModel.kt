@@ -19,9 +19,11 @@ internal class EditSceneViewModel(
     private val saveSceneUseCase: SaveSceneUseCase,
 ) : ViewModel() {
 
+    private val initialScene: SceneUi? = savedStateHandle[KEY_INITIAL_SCENE]
+
     val state: StateFlow<State> = savedStateHandle.getStateFlow(
         key = KEY_STATE,
-        initialValue = State(),
+        initialValue = State(scene = initialScene ?: SceneUi()),
     )
 
     private val _event = Channel<Event>()
@@ -82,6 +84,7 @@ internal class EditSceneViewModel(
     }
 
     companion object {
+        const val KEY_INITIAL_SCENE = "key_initial_scene"
         private const val KEY_STATE = "key_edit_scene_state"
     }
 }

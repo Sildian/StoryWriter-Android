@@ -37,6 +37,7 @@ import com.sildian.apps.storywriter.uilayer.scene.SceneUi
 internal fun ShowScenesScreen(
     state: ShowScenesViewModel.State,
     onAddSceneButtonClick: () -> Unit,
+    onEditSceneClick: (SceneUi) -> Unit,
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets.safeDrawing,
@@ -63,6 +64,7 @@ internal fun ShowScenesScreen(
                     SuccessContent(
                         modifier = contentModifier,
                         state = currentState,
+                        onEditSceneClick = onEditSceneClick,
                     )
             }
         }
@@ -116,6 +118,7 @@ private fun FailureContent(
 @Composable
 private fun SuccessContent(
     state: ShowScenesViewModel.State.Success,
+    onEditSceneClick: (SceneUi) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -126,6 +129,7 @@ private fun SuccessContent(
             SceneItem(
                 modifier = Modifier.fillMaxWidth(),
                 scene = scene,
+                onClick = { onEditSceneClick(scene) },
             )
         }
     }
@@ -156,6 +160,7 @@ private fun ShowScenesScreenPreview(
         ShowScenesScreen(
             state = state,
             onAddSceneButtonClick = { },
+            onEditSceneClick = { },
         )
     }
 }

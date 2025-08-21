@@ -6,7 +6,8 @@
     <string name="edit_scene_message_save_scene_success">The scene was successfully saved.</string>
     <string name="edit_scene_placeholder_scene">Write your scene</string>
 
-    <string name="show_scenes_button_add_scene_content_description">Add a new scene</string>"
+    <string name="show_scenes_button_add_scene_content_description">Add a new scene</string>
     <string name="show_scenes_button_retry">Retry</string>
+    <string name="show_scenes_action_edit_scene_content_description">Edit this scene</string>
     <string name="show_scenes_message_load_scenes_failure">The scenes could not be loaded. Please try again later.</string>
 </resources>
