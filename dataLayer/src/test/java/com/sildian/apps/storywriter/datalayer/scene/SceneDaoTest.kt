@@ -1,5 +1,6 @@
 package com.sildian.apps.storywriter.datalayer.scene
 
+import app.cash.turbine.test
 import com.sildian.apps.storywriter.datalayer.InMemoryDatabaseRule
 import com.sildian.apps.storywriter.datalayer.StoryWriterDatabase
 import kotlinx.coroutines.test.runTest
@@ -57,12 +58,14 @@ class SceneDaoTest {
         scenes.forEach { scene -> databaseRule.database.sceneDao().insert(scene = scene) }
 
         // When
-        val result = databaseRule.database.sceneDao().getAll()
+        databaseRule.database.sceneDao().getAll().test {
 
-        // Then
-        val expectedResult = scenes.mapIndexed { index, scene ->
-            scene.copy(id = (index + 1).toLong())
+            // Then
+            val expectedResult = scenes.mapIndexed { index, scene ->
+                scene.copy(id = (index + 1).toLong())
+            }
+            assertEquals(expected = expectedResult, actual = awaitItem())
+            cancelAndIgnoreRemainingEvents()
         }
-        assertEquals(expected = expectedResult, actual = result)
     }
 }

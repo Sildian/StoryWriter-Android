@@ -1,13 +1,15 @@
 package com.sildian.apps.storywriter.domainlayer.scene
 
+import kotlinx.coroutines.flow.Flow
+
 fun interface GetAllScenesUseCase {
-    suspend operator fun invoke(): Result<List<Scene>>
+    operator fun invoke(): Flow<List<Scene>>
 }
 
 internal class GetAllScenesUseCaseImpl(
     private val sceneRepository: SceneRepository,
 ) : GetAllScenesUseCase {
 
-    override suspend operator fun invoke(): Result<List<Scene>> =
+    override operator fun invoke(): Flow<List<Scene>> =
         sceneRepository.getAllScenes()
 }

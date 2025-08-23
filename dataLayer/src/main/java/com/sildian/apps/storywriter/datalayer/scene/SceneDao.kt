@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 internal interface SceneDao {
@@ -15,7 +16,7 @@ internal interface SceneDao {
     suspend fun update(scene: SceneDb)
 
     @Query("SELECT * FROM SceneDb")
-    suspend fun getAll(): List<SceneDb>
+    fun getAll(): Flow<List<SceneDb>>
 
     @Query("SELECT * FROM SceneDb WHERE id = :id")
     suspend fun get(id: Long): SceneDb

@@ -5,6 +5,8 @@ import app.cash.turbine.test
 import com.sildian.apps.storywriter.domainlayer.scene.GetAllScenesUseCase
 import com.sildian.apps.storywriter.domainlayer.scene.nextScene
 import com.sildian.apps.storywriter.uilayer.scene.toUi
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import java.io.IOException
 import kotlin.random.Random
@@ -17,7 +19,7 @@ class ShowScenesViewModelTest {
     fun `init should raise Failure state when useCase fails`() = runTest {
         // Given
         val exception = IOException()
-        val getAllScenesUseCase = GetAllScenesUseCase { Result.failure(exception = exception) }
+        val getAllScenesUseCase = GetAllScenesUseCase { flow { throw exception } }
 
         // When
         val viewModel = initViewModel(getAllScenesUseCase = getAllScenesUseCase)
@@ -34,7 +36,7 @@ class ShowScenesViewModelTest {
     fun `init should raise Success state with given scenes when useCase succeeds`() = runTest {
         // Given
         val scenes = List(size = 3) { index -> Random.nextScene(id = index.toLong()) }
-        val getAllScenesUseCase = GetAllScenesUseCase { Result.success(value = scenes) }
+        val getAllScenesUseCase = GetAllScenesUseCase { flowOf(scenes) }
 
         // When
         val viewModel = initViewModel(getAllScenesUseCase = getAllScenesUseCase)
@@ -50,7 +52,7 @@ class ShowScenesViewModelTest {
     private fun initViewModel(
         savedStateHandle: SavedStateHandle = SavedStateHandle(),
         getAllScenesUseCase: GetAllScenesUseCase = GetAllScenesUseCase {
-            Result.success(List(size = 3) { index -> Random.nextScene(id = index.toLong()) })
+            flowOf(List(size = 3) { index -> Random.nextScene(id = index.toLong()) })
         },
     ): ShowScenesViewModel =
         ShowScenesViewModel(

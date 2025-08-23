@@ -2,6 +2,8 @@ package com.sildian.apps.storywriter.uilayer.scene.showscenes
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +35,7 @@ import com.sildian.apps.storywriter.designsystem.theme.StoryWriterTheme
 import com.sildian.apps.storywriter.uilayer.R
 import com.sildian.apps.storywriter.uilayer.scene.SceneUi
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 internal fun ShowScenesScreen(
     state: ShowScenesViewModel.State,
@@ -47,7 +50,7 @@ internal fun ShowScenesScreen(
             }
         },
     ) { contentPadding ->
-        Crossfade(targetState = state) { currentState ->
+        updateTransition(targetState = state).Crossfade(contentKey = { it.javaClass }) { currentState ->
             val contentModifier = Modifier
                 .fillMaxSize()
                 .padding(contentPadding)
@@ -127,7 +130,9 @@ private fun SuccessContent(
     ) {
         items(items = state.scenes, key = { it.id }) { scene ->
             SceneItem(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .animateItem(),
                 scene = scene,
                 onClick = { onEditSceneClick(scene) },
             )

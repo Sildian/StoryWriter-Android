@@ -1,5 +1,6 @@
 package com.sildian.apps.storywriter.uilayer.scene.showscenes
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.padding
@@ -25,12 +26,13 @@ internal fun SceneItem(
 ) {
     Text(
         modifier = modifier
+            .animateContentSize()
             .background(
                 color = MaterialTheme.colorScheme.secondaryContainer,
                 shape = MaterialTheme.shapes.large.copy(
                     topEnd = ZeroCornerSize,
                     bottomStart = ZeroCornerSize,
-                )
+                ),
             ).clickable(
                 role = Role.Button,
                 onClickLabel = stringResource(id = R.string.show_scenes_action_edit_scene_content_description),

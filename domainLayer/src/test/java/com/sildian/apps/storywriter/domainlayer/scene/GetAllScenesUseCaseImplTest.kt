@@ -1,5 +1,9 @@
 package com.sildian.apps.storywriter.domainlayer.scene
 
+import app.cash.turbine.test
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlin.random.Random
 import kotlin.test.Test
@@ -12,16 +16,16 @@ class GetAllScenesUseCaseImplTest {
         // Given
         val exception = Throwable()
         val repository = object : SceneRepositoryFake() {
-            override suspend fun getAllScenes(): Result<List<Scene>> =
-                Result.failure(exception = exception)
+            override fun getAllScenes(): Flow<List<Scene>> = flow { throw exception }
         }
         val useCase = initUseCase(sceneRepository = repository)
 
         // When
-        val result = useCase()
+        useCase().test {
 
-        // Then
-        assertEquals(expected = exception, actual = result.exceptionOrNull())
+            // Then
+            assertEquals(expected = exception, actual = awaitError())
+        }
     }
 
     @Test
@@ -29,16 +33,17 @@ class GetAllScenesUseCaseImplTest {
         // Given
         val scenes = List(size = 3) { Random.nextScene() }
         val repository = object : SceneRepositoryFake() {
-            override suspend fun getAllScenes(): Result<List<Scene>> =
-                Result.success(scenes)
+            override fun getAllScenes(): Flow<List<Scene>> = flowOf(scenes)
         }
         val useCase = initUseCase(sceneRepository = repository)
 
         // When
-        val result = useCase()
+        useCase().test {
 
-        // Then
-        assertEquals(expected = scenes, actual = result.getOrNull())
+            // Then
+            assertEquals(expected = scenes, actual = awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
     private fun initUseCase(

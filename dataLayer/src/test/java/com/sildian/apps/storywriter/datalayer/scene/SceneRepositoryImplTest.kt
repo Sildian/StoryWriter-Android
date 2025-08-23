@@ -1,9 +1,13 @@
 package com.sildian.apps.storywriter.datalayer.scene
 
+import app.cash.turbine.test
 import com.sildian.apps.storywriter.datalayer.StoryWriterDatabase
 import com.sildian.apps.storywriter.datalayer.StoryWriterDatabaseFake
 import com.sildian.apps.storywriter.domainlayer.scene.SceneRepository
 import com.sildian.apps.storywriter.domainlayer.scene.nextScene
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import java.io.IOException
 import kotlin.random.Random
@@ -19,16 +23,17 @@ class SceneRepositoryImplTest {
         val repository = initRepository(
             storyWriterDatabase = object : StoryWriterDatabaseFake() {
                 override fun sceneDao(): SceneDao = object : SceneDaoFake() {
-                    override suspend fun getAll(): List<SceneDb> = throw error
+                    override fun getAll(): Flow<List<SceneDb>> = flow { throw error }
                 }
             }
         )
 
         // When
-        val result = repository.getAllScenes()
+        repository.getAllScenes().test {
 
-        // Then
-        assertEquals(expected = Result.failure(error), actual = result)
+            // Then
+            assertEquals(expected = error, actual = awaitError())
+        }
     }
 
     @Test
@@ -38,16 +43,18 @@ class SceneRepositoryImplTest {
         val repository = initRepository(
             storyWriterDatabase = object : StoryWriterDatabaseFake() {
                 override fun sceneDao(): SceneDao = object : SceneDaoFake() {
-                    override suspend fun getAll(): List<SceneDb> = scenes.map { it.toDb() }
+                    override fun getAll(): Flow<List<SceneDb>> = flowOf(scenes.map { it.toDb() })
                 }
             }
         )
 
         // When
-        val result = repository.getAllScenes()
+        repository.getAllScenes().test {
 
-        // Then
-        assertEquals(expected = Result.success(scenes), actual = result)
+            // Then
+            assertEquals(expected = scenes, actual = awaitItem())
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
     @Test

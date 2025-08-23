@@ -8,6 +8,7 @@ import com.sildian.apps.storywriter.domainlayer.scene.GetAllScenesUseCase
 import com.sildian.apps.storywriter.uilayer.scene.SceneUi
 import com.sildian.apps.storywriter.uilayer.scene.toUi
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 
@@ -28,9 +29,9 @@ internal class ShowScenesViewModel(
     private fun loadScenes() {
         viewModelScope.launch {
             getAllScenesUseCase()
-                .onFailure {
+                .catch {
                     savedStateHandle[KEY_STATE] = State.Failure
-                }.onSuccess { scenes ->
+                }.collect { scenes ->
                     savedStateHandle[KEY_STATE] = State.Success(scenes = scenes.map { it.toUi() })
                 }
         }
