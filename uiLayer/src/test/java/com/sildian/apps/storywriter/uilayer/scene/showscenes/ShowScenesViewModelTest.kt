@@ -5,15 +5,20 @@ import app.cash.turbine.test
 import com.sildian.apps.storywriter.domainlayer.scene.GetAllScenesUseCase
 import com.sildian.apps.storywriter.domainlayer.scene.nextScene
 import com.sildian.apps.storywriter.uilayer.scene.toUi
+import com.sildian.apps.storywriter.uilayer.testutils.CoroutineTestRule
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import java.io.IOException
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class ShowScenesViewModelTest {
+
+    @get:Rule
+    val coroutineTestRule = CoroutineTestRule()
 
     @Test
     fun `init should raise Failure state when useCase fails`() = runTest {

@@ -5,7 +5,9 @@ import app.cash.turbine.test
 import com.sildian.apps.storywriter.domainlayer.scene.SaveSceneUseCase
 import com.sildian.apps.storywriter.uilayer.scene.SceneUi
 import com.sildian.apps.storywriter.uilayer.scene.nextSceneUi
+import com.sildian.apps.storywriter.uilayer.testutils.CoroutineTestRule
 import kotlinx.coroutines.test.runTest
+import org.junit.Rule
 import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -13,6 +15,9 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class EditSceneViewModelTest {
+
+    @get:Rule
+    val coroutineTestRule = CoroutineTestRule()
 
     @Test
     fun `state should be initialized after init`() = runTest {
